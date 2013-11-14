@@ -2,16 +2,18 @@
 
 require 'pebble'
 
+TITLE = "Pebble Commander"
+
 def send_result(watch, result)
   if result
-    watch.notification_sms("Pebble Dev", "Success!")
+    watch.notification_sms(TITLE "Success!")
   else
-    watch.notification_sms("Pebble Dev", "Failure...")
+    watch.notification_sms(TITLE, "Failure...")
   end
 end
 
 def run_command(watch, command)
-  watch.notification_sms("Pebble Dev", "Running:\n '#{command.chomp}'")
+  watch.notification_sms(TITLE, "Running:\n '#{command.chomp}'")
   result = system(command)
   send_result(watch, result)
 end
@@ -19,7 +21,7 @@ end
 watch = Pebble::Watch.autodetect
 watch.connect
 
-watch.notification_sms("Pebble", "Welcome to Pebble Dev!")
+watch.notification_sms(TITLE, "Welcome to #{TITLE}!")
 
 commands = []
 File.open(".pebble-commands").each_line { |line| commands << line }
