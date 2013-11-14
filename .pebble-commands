@@ -1,0 +1,3 @@
+git pull
+gem build pebble_commander.gemspec
+gem push pebble_commander-*

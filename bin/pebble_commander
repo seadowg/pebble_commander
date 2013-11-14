@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+
+require 'pebble'
+
+def send_result(watch, result)
+  if result
+    watch.notification_sms("Pebble Dev", "Success!")
+  else
+    watch.notification_sms("Pebble Dev", "Failure...")
+  end
+end
+
+def run_command(watch, command)
+  watch.notification_sms("Pebble Dev", "Running:\n '#{command.chomp}'")
+  result = system(command)
+  send_result(watch, result)
+end
+
+watch = Pebble::Watch.autodetect
+watch.connect
+
+watch.notification_sms("Pebble", "Welcome to Pebble Dev!")
+
+commands = []
+File.open(".pebble-commands").each_line { |line| commands << line }
+watch.set_nowplaying_metadata(commands[0], commands[2], commands[1])
+
+watch.on_event(:media_control) do |event|
+  case event.button
+  when :previous
+    run_command(watch, commands[0])
+  when :playpause 
+    run_command(watch, commands[1])
+  when :next
+    run_command(watch, commands[2])
+  end
+end
+
+watch.listen_for_events
+
