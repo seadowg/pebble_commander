@@ -6,7 +6,7 @@ TITLE = "Pebble Commander"
 
 def send_result(watch, result)
   if result
-    watch.notification_sms(TITLE "Success!")
+    watch.notification_sms(TITLE, "Success!")
   else
     watch.notification_sms(TITLE, "Failure...")
   end
